@@ -25,45 +25,7 @@
     const selectedCarId = parseInt(event.target.options[selectedIndex].value);
     selectedData = data.filter((item) => item.car_id === selectedCarId);
   }
-/*
-  function getCircleCoords(longitude, latitude) {
-  const imgWidth = 1000;
-  const imgHeight = 667;
-  const longRange = [-3.192473, -3.184803];
-  const latRange = [55.946233, 55.942617];
 
-  const x = Math.floor(((longitude - longRange[0]) / (longRange[1] - longRange[0])) * imgWidth);
-  const y = Math.floor(((latRange[1] - latitude) / (latRange[1] - latRange[0])) * imgHeight);
-
-  return { x, y };
-}
-
-function handleMouseOver(event) {
-    const circle = event.target;
-    const circleCoords = getCircleCoords(circle);
-    const tooltip = document.createElement("div");
-    tooltip.classList.add("tooltip");
-    tooltip.textContent = `Lat: ${circleCoords.lat}, Long: ${circleCoords.long}`;
-    circle.parentNode.appendChild(tooltip);
-  }
-
-  function handleMouseOut(event) {
-    const circle = event.target;
-    const tooltip = circle.parentNode.querySelector(".tooltip");
-    tooltip && tooltip.remove();
-  }
-
-  function handleClick(event) {
-  const x = event.offsetX;
-  const y = event.offsetY;
-  const coords = getCircleCoords(x, y);
-  const selectedPoint = data.find((item) => {
-    return item.lat === coords.lat && item.long === coords.long;
-  });
-  if (selectedPoint) {
-    selectedData = [selectedPoint];
-  }
-}*/
 function getCircleCoords(item) {
   const mapWidth = 0.018;
   const mapLongMin = 4.694411;
@@ -125,24 +87,6 @@ function handleClick(item) {
   {/each}
 </select>
 
- {#if selectedData !== null}
-    {#each selectedData as item}
-      <div>
-        <p>Key: {item.key}</p>
-        <p>Car ID: {item.car_id}</p>
-        <p>Day: {item.day}</p>
-        <p>Hour: {item.hour}</p>
-        <p>Minute: {item.minute}</p>
-        <p>Cumulative Minute: {item.cumulative_minute}</p>
-        <p>Longitude: {item.long}</p>
-        <p>Latitude: {item.lat}</p>
-        <p>Speed: {item.speed}</p>
-        <p>Cumulative Minute Total: {item.cumulative_minute_total}</p>
-        <br/>
-      </div>
-    {/each}
-  {/if}
-
 <div>
   <h1>Map</h1>
   <map name="map_image3.jpg">
@@ -161,6 +105,22 @@ function handleClick(item) {
   </map>
 </div>
 
-
+{#if selectedData !== null}
+    {#each selectedData as item}
+      <div>
+        <p>Key: {item.key}</p>
+        <p>Car ID: {item.car_id}</p>
+        <p>Day: {item.day}</p>
+        <p>Hour: {item.hour}</p>
+        <p>Minute: {item.minute}</p>
+        <p>Cumulative Minute: {item.cumulative_minute}</p>
+        <p>Longitude: {item.long}</p>
+        <p>Latitude: {item.lat}</p>
+        <p>Speed: {item.speed}</p>
+        <p>Cumulative Minute Total: {item.cumulative_minute_total}</p>
+        <br/>
+      </div>
+    {/each}
+  {/if}
 
 </main>
