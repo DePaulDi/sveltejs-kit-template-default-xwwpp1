@@ -10,14 +10,39 @@
 	let number = 'r0877868';
   import { onMount } from 'svelte';
   let data = [];
-  
+  let imagePath = 'src/data/map_image.jpg';
+
 	
   onMount(async () => {
     const response = await fetch('src/data/dataset1.json');
     data = await response.json();
   });
 
+ let selectedCarId = null;
+  let cars = [];
+/*
+ onMount(() => {
+    // Get unique car IDs from the JSON data
+    cars = Array.from(new Set(data.map(item => item.car_id)));
+  });
 
+  function handleCarSelect(event) {
+    // Update selected car ID when dropdown value changes
+    selectedCarId = event.target.value;
+  }
+
+   $: selectedCarData = data.filter(item => item.car_id === selectedCarId);
+*/
+/*
+  function handleChange(event) {
+    const selectedIndex = event.target.selectedIndex;
+    selectedData = data[selectedIndex];
+  }*/
+ function handleChange(event) {
+    const selectedIndex = event.target.selectedIndex;
+    const selectedCarId = parseInt(event.target.options[selectedIndex].value);
+    selectedData = data.filter((item) => item.car_id === selectedCarId);
+  }
 </script>
 
 <style>
@@ -49,6 +74,7 @@
 		<li>Number: <b>{number}</b></li>
 	</ul>
 
+<!--
 {#each data as item}
   <div>
     <p>Key: {item.key}</p>
@@ -63,12 +89,19 @@
     <p>Cumulative Minute Total: {item.cumulative_minute_total}</p>
   </div>
 {/each}
-
+-->
 
   <div>
     <h1>Map</h1>
-    <img src="https://storage.googleapis.com/gweb-cloudblog-publish/images/MapImage2_cwGJZTs.max-600x600.png" alt="Example Image">
+    <img src="src/data/map_image.jpg" alt="Example Image">
   </div>
+
+<label for="dropdown">Select car:</label>
+<select id="dropdown" on:change={handleChange}>
+  {#each [...new Set(data.map(item => item.car_id))] as carId}
+    <option value={carId}>{`Car ${carId}`}</option>
+  {/each}
+</select>
 
 
 </main>
