@@ -90,7 +90,7 @@ function handleClick(item) {
 <div>
   <h1>Map</h1>
   <map name="map_image3.jpg">
-    <img src="src/data/map_image3.jpg" alt="Example Image" usemap="#map_image">
+    <img src="src/data/map_image3.jpg" alt="Examplee" usemap="#map_image">
     {#each selectedData as item}
       <area
         alt="Marker 1"
