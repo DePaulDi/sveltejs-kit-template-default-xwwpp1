@@ -55,24 +55,6 @@
 		<li>University: <b>{university}</b></li>
 		<li>Number: <b>{number}</b></li>
 	</ul>
-
-<!--
-{#each data as item}
-  <div>
-    <p>Key: {item.key}</p>
-    <p>Car ID: {item.car_id}</p>
-    <p>Day: {item.day}</p>
-    <p>Hour: {item.hour}</p>
-    <p>Minute: {item.minute}</p>
-    <p>Cumulative Minute: {item.cumulative_minute}</p>
-    <p>Longitude: {item.long}</p>
-    <p>Latitude: {item.lat}</p>
-    <p>Speed: {item.speed}</p>
-    <p>Cumulative Minute Total: {item.cumulative_minute_total}</p>
-  </div>
-{/each}
--->
-
   
 <label for="dropdown">Select car:</label>
 <select id="dropdown" on:change={handleChange}>
@@ -99,7 +81,7 @@
         <p>Latitude: {item.lat}</p>
         <p>Speed: {item.speed}</p>
         <p>Cumulative Minute Total: {item.cumulative_minute_total}</p>
-        <p> NEXT DATA </p>
+        <br/>
       </div>
     {/each}
   {/if}
