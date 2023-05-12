@@ -1,6 +1,6 @@
 <nav>
 	<a href="/">home</a>
-	<a href="/about">about</a>
+	<a href="/cars">cars</a>
 </nav>
 
 <!-- App.svelte -->
@@ -34,18 +34,6 @@ function getCircleCoords(item) {
   const y = (mapLatMax - item.lat) / mapLatMax;
   const radius = 0.01;
   return `${x},${y},${radius}`;
-}
-
-function handleMouseOver(item) {
-  console.log(`Mouse over car ID: ${item.car_id}`);
-}
-
-function handleMouseOut(item) {
-  console.log(`Mouse out car ID: ${item.car_id}`);
-}
-
-function handleClick(item) {
-  console.log(`Clicked car ID: ${item.car_id}`);
 }
 
 </script>
@@ -91,17 +79,6 @@ function handleClick(item) {
   <h1>Map</h1>
   <map name="map_image3.jpg">
     <img src="src/data/map_image3.jpg" alt="Examplee" usemap="#map_image">
-    {#each selectedData as item}
-      <area
-        alt="Marker 1"
-        shape="circle"
-        coords="{getCircleCoords(item)}"
-        onmouseover={() => handleMouseOver(item)}
-        onmouseout={() => handleMouseOut(item)}
-        onclick={() => handleClick(item)}
-        aria-label="Marker for longitude: {item.long} and latitude: {item.lat}"
-      />
-    {/each}
   </map>
 </div>
 
