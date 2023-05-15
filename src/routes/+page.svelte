@@ -63,8 +63,8 @@
 
   const MIN_LONGITUDE = 24.8825;
   const MAX_LATITUDE = 36.0675;
-  const LONGITUDE_TO_PIXEL_RATIO = 500 / 0.025;
-  const LATITUDE_TO_PIXEL_RATIO = 500 / 0.025;
+  const LONGITUDE_TO_PIXEL_RATIO = 600 / 0.025;
+  const LATITUDE_TO_PIXEL_RATIO = 600 / 0.025;
 </script>
 
 <style>
@@ -112,7 +112,7 @@
 		<li>Number: <b>{number}</b></li>
 	</ul>
 
- <svg width=500 height=500>
+ <svg width=60000 height=60000>
   {#each data as car}
     <circle
       cx={(car.long - MIN_LONGITUDE) * LONGITUDE_TO_PIXEL_RATIO}
