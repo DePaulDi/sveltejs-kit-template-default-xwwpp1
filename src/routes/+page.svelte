@@ -10,7 +10,7 @@
 	let number = 'r0877868';
   import { onMount } from 'svelte';
   let data = [];
-  let imagePath = 'src/data/map_image.jpg';
+  let imagePath = 'src/data/map_image3.jpg';
   let selectedData = [];
 
 	
@@ -20,21 +20,43 @@
   });
 
 
- function handleChange(event) {
-    const selectedIndex = event.target.selectedIndex;
-    const selectedCarId = parseInt(event.target.options[selectedIndex].value);
-    selectedData = data.filter((item) => item.car_id === selectedCarId);
+  let currentIndex = 0;
+  let currentDisp = 1;
+  let imageUrl = '';
+  let altText = '';
+  let carId = '';
+  let day = '';
+  let hour = '';
+  let minute = '';
+  let speed = '';
+
+  function updateImage(currentDisp) {
+    currentDisp++;
+    let dataset = data[currentDisp];
+    altText = `Car ${dataset.car_id} at ${dataset.speed} km/h`;
+    carid = dataset.car_id;
+    day = dataset.day;
+    hour = dataset.hour;
+    minute = dataset.minute;
+    speed = dataset.speed;
+
   }
 
-function getCircleCoords(item) {
-  const mapWidth = 0.018;
-  const mapLongMin = 4.694411;
-  const mapLatMax = 51.06842;
-  const x = (item.long - mapLongMin) / mapWidth;
-  const y = (mapLatMax - item.lat) / mapLatMax;
-  const radius = 0.01;
-  return `${x},${y},${radius}`;
-}
+  onMount(() => {
+    updateImage();
+  });
+  /*
+  $: {
+    let dataset = Data[currentIndex];
+    $carId = dataset.car_id;
+    $day = dataset.day;
+    $hour = dataset.hour;
+    $minute = dataset.minute;
+    $speed = dataset.speed;
+  }
+*/
+let filteredCars = [];
+$: filteredCars = data.filter(car => data.car_id === currentDisp);
 
 </script>
 
@@ -67,7 +89,7 @@ function getCircleCoords(item) {
 		<li>University: <b>{university}</b></li>
 		<li>Number: <b>{number}</b></li>
 	</ul>
-  
+<!--  
 <label for="dropdown">Select car:</label>
 <select id="dropdown" on:change={handleChange}>
   {#each [...new Set(data.map(item => item.car_id))] as carId}
@@ -81,7 +103,31 @@ function getCircleCoords(item) {
     <img src="src/data/map_image3.jpg" alt="Examplee" usemap="#map_image">
   </map>
 </div>
+-->
 
+ <img src={imagePath} alt={altText} style="width: 100%; max-width: 600px; height: auto;">
+  <button on:click={() => { currentDisp--; updateImage(currentDisp); }}>Previous</button>
+  <button on:click={() => { currentDisp++; updateImage(currentDisp); }}>Next</button>
+  <h1>Cars with car_id {currentDisp}</h1>
+  {#each data as car}
+    {#if car.car_id === currentDisp}
+      <div>
+        <p>Key: {car.key}</p>
+        <p>Car ID: {car.car_id}</p>
+        <p>Day: {car.day}</p>
+        <p>Hour: {car.hour}</p>
+        <p>Minute: {car.minute}</p>
+        <p>Cumulative Minute: {car.cumulative_minute}</p>
+        <p>Longitude: {car.long}</p>
+        <p>Latitude: {car.lat}</p>
+        <p>Speed: {car.speed}</p>
+        <p>Cumulative Minute Total: {car.cumulative_minute_total}</p>
+        <br/>
+      </div>
+    {/if} 
+  {/each}
+  
+<!--
 {#if selectedData !== null}
     {#each selectedData as item}
       <div>
@@ -99,5 +145,5 @@ function getCircleCoords(item) {
       </div>
     {/each}
   {/if}
-
+-->
 </main>
