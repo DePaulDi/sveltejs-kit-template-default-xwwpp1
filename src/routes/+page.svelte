@@ -10,6 +10,7 @@
 	let number = 'r0877868';
   import { onMount } from 'svelte';
   let data = [];
+  let p_int = [];
   let imagePath = 'src/data/map_image3.jpg';
   let selectedData = [];
 
@@ -19,6 +20,25 @@
     data = await response.json();
   });
 
+ onMount(async () => {
+    const response = await fetch('src/data/dataset2.json');
+    p_int = await response.json();
+  });
+
+    function getLocationColor(type) {
+    switch(type) {
+      case "professional":
+        return "red";
+      case "catering":
+        return "green";
+      case "domestic":
+        return "orange";
+      case "housing":
+        return "purple";
+      default:
+        return "blue";
+    }
+  }
 
   let currentIndex = 0;
   let currentDisp = 1;
@@ -34,33 +54,34 @@
     currentDisp++;
     let dataset = data[currentDisp];
     altText = `Car ${dataset.car_id} at ${dataset.speed} km/h`;
-    carid = dataset.car_id;
-    day = dataset.day;
-    hour = dataset.hour;
-    minute = dataset.minute;
-    speed = dataset.speed;
-
   }
 
   onMount(() => {
     updateImage();
   });
-  /*
-  $: {
-    let dataset = Data[currentIndex];
-    $carId = dataset.car_id;
-    $day = dataset.day;
-    $hour = dataset.hour;
-    $minute = dataset.minute;
-    $speed = dataset.speed;
-  }
-*/
-let filteredCars = [];
-$: filteredCars = data.filter(car => data.car_id === currentDisp);
+ 
 
+  const MIN_LONGITUDE = 24.8825;
+  const MAX_LATITUDE = 36.0675;
+  const LONGITUDE_TO_PIXEL_RATIO = 500 / 0.025;
+  const LATITUDE_TO_PIXEL_RATIO = 500 / 0.025;
 </script>
 
 <style>
+
+/*
+        svg {
+            border: 1px;
+            border-style: solid;
+        }
+        circle {
+            fill: steelblue;
+            opacity: 0.5;
+        }
+        circle:hover {
+            fill: red;
+        }
+*/      
 
 
 	h1 {
@@ -69,6 +90,7 @@ $: filteredCars = data.filter(car => data.car_id === currentDisp);
 		text-align: center;
 		margin-top: 2em;
 	}
+
 
 	ul {
 		list-style: none;
@@ -89,61 +111,25 @@ $: filteredCars = data.filter(car => data.car_id === currentDisp);
 		<li>University: <b>{university}</b></li>
 		<li>Number: <b>{number}</b></li>
 	</ul>
-<!--  
-<label for="dropdown">Select car:</label>
-<select id="dropdown" on:change={handleChange}>
-  {#each [...new Set(data.map(item => item.car_id))] as carId}
-    <option value={carId}>{`Car ${carId}`}</option>
-  {/each}
-</select>
 
-<div>
-  <h1>Map</h1>
-  <map name="map_image3.jpg">
-    <img src="src/data/map_image3.jpg" alt="Examplee" usemap="#map_image">
-  </map>
-</div>
--->
-
- <img src={imagePath} alt={altText} style="width: 100%; max-width: 600px; height: auto;">
-  <button on:click={() => { currentDisp--; updateImage(currentDisp); }}>Previous</button>
-  <button on:click={() => { currentDisp++; updateImage(currentDisp); }}>Next</button>
-  <h1>Cars with car_id {currentDisp}</h1>
+ <svg width=500 height=500>
   {#each data as car}
-    {#if car.car_id === currentDisp}
-      <div>
-        <p>Key: {car.key}</p>
-        <p>Car ID: {car.car_id}</p>
-        <p>Day: {car.day}</p>
-        <p>Hour: {car.hour}</p>
-        <p>Minute: {car.minute}</p>
-        <p>Cumulative Minute: {car.cumulative_minute}</p>
-        <p>Longitude: {car.long}</p>
-        <p>Latitude: {car.lat}</p>
-        <p>Speed: {car.speed}</p>
-        <p>Cumulative Minute Total: {car.cumulative_minute_total}</p>
-        <br/>
-      </div>
-    {/if} 
+    <circle
+      cx={(car.long - MIN_LONGITUDE) * LONGITUDE_TO_PIXEL_RATIO}
+      cy={(MAX_LATITUDE - car.lat) * LATITUDE_TO_PIXEL_RATIO}
+      r="2"
+      opacity="0.2"
+      fill="black"
+    />
   {/each}
-  
-<!--
-{#if selectedData !== null}
-    {#each selectedData as item}
-      <div>
-        <p>Key: {item.key}</p>
-        <p>Car ID: {item.car_id}</p>
-        <p>Day: {item.day}</p>
-        <p>Hour: {item.hour}</p>
-        <p>Minute: {item.minute}</p>
-        <p>Cumulative Minute: {item.cumulative_minute}</p>
-        <p>Longitude: {item.long}</p>
-        <p>Latitude: {item.lat}</p>
-        <p>Speed: {item.speed}</p>
-        <p>Cumulative Minute Total: {item.cumulative_minute_total}</p>
-        <br/>
-      </div>
-    {/each}
-  {/if}
--->
+  {#each p_int as location}
+    <circle
+      cx={(location.long - MIN_LONGITUDE) * LONGITUDE_TO_PIXEL_RATIO}
+      cy={(MAX_LATITUDE - location.lat) * LATITUDE_TO_PIXEL_RATIO}
+      r="10"
+      fill={getLocationColor(location.type)}
+      opacity = "1"
+    />
+  {/each}
+</svg>
 </main>
