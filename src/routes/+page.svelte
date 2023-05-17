@@ -110,9 +110,9 @@
     <circle
       cx={(car.long - minLongitude) * LONGITUDE_TO_PIXEL_RATIO}
       cy={(maxLatitude - car.lat) * LATITUDE_TO_PIXEL_RATIO}
-      r="2"
-      opacity="0.2"
-      fill={car.car_id === selectedCarId ? 'red' : 'black'}
+      r={car.car_id == selectedCarId ? "5.2" : "1.2"}
+      opacity={car.car_id == selectedCarId ? "5.2" : "1.2"}
+      fill={car.car_id == selectedCarId ? "red" : "black"}
     />
   {/each}
   {#each p_int as location}
