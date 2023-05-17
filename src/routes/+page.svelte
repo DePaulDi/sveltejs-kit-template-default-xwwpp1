@@ -10,50 +10,11 @@
 	let number = 'r0877868';
   import { onMount } from 'svelte';
   import data from "../../src/data/dataset1.json"
-  let p_int = [];
+  import p_int from "../../src/data/dataset2.json"
   let imagePath = 'src/data/map_image3.jpg';
-  let selectedData = [];
-  let jsonData;
-	
-  onMount(async () => {
-    const response = await fetch('src/data/dataset1.json');
-    data = await response.json();
-  });
-
-/*
- $: {
-    if (data.length!=0) {
-      let minLat;
-      let maxLat;
-      let minLong;
-      let maxLong;
-      console.log("length");
-      console.log(data.length);
-      for (let i=0;i<data.length;i++)
-      {
-      minLat = Math.min(data[i].map(car => car.lat));
-      console.log(minLat);
-      maxLat = Math.max(data[i].map(car => car.lat));
-      console.log(maxLat);
-      minLong = Math.min(data[i].map(car => car.long));
-      console.log(minLong);
-      maxLong = Math.max(data[i].map(car => car.long));
-      console.log(maxLong);
-      }
-      const LONG_FACTOR = 600 / (maxLong - minLong);
-      const LAT_FACTOR = 600 / (maxLat - minLat);
-      console.log(LONG_FACTOR);
-      console.log(LAT_FACTOR);
-    }
-    else{
-      console.log("not_loaded");
-    }
-  }
-*/
- onMount(async () => {
-    const response = await fetch('src/data/dataset2.json');
-    p_int = await response.json();
-  });
+	let currentIndex = 0;
+  let currentDisp = 1;
+  
 
     function getLocationColor(type) {
     switch(type) {
@@ -69,16 +30,6 @@
         return "blue";
     }
   }
-
-  let currentIndex = 0;
-  let currentDisp = 1;
-  let imageUrl = '';
-  let altText = '';
-  let carId = '';
-  let day = '';
-  let hour = '';
-  let minute = '';
-  let speed = '';
 
   function updateImage(currentDisp) {
     currentDisp++;
