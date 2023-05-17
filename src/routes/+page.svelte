@@ -1,8 +1,3 @@
-<nav>
-	<a href="/">home</a>
-	<a href="/cars">cars</a>
-</nav>
-
 <!-- App.svelte -->
 <script>
 
@@ -106,7 +101,7 @@
 </select>
 
 {#if selectedCarId}
-  <p>Go to <a href="/cars">details</a> for car {selectedCarId}</p>
+  <p>Go to <a href="/details?value1=selectedCarId">details</a> for car {selectedCarId}</p>
 {/if}
 
 <svg width=600 height=600>
