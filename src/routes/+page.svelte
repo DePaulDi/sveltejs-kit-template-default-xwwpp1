@@ -16,7 +16,7 @@
   let currentDisp = 1;
   
 
-    function getLocationColor(type) {
+  function getLocationColor(type) {
     switch(type) {
       case "professional":
         return "red";
@@ -30,34 +30,18 @@
         return "blue";
     }
   }
-
-  function updateImage(currentDisp) {
-    currentDisp++;
-    let dataset = data[currentDisp];
-    altText = `Car ${dataset.car_id} at ${dataset.speed} km/h`;
-  }
-
-  onMount(() => {
-    updateImage();
-  });
   
+  // Find the latitude and longitude range
   const mapWidth = 600;
   const mapHeight = 600;
-
-  // Find the latitude and longitude range
   const latitudes = data.map(car => car.lat);
   const longitudes = data.map(car => car.long);
   const minLatitude = Math.min(...latitudes);
   const maxLatitude = Math.max(...latitudes);
   const minLongitude = Math.min(...longitudes);
   const maxLongitude = Math.max(...longitudes);
-  const numCars = data.map(car => car.car_id);
-  const numCar = Math.max(...numCars);
-
-
   const latitudeRange = maxLatitude - minLatitude;
   const longitudeRange = maxLongitude - minLongitude;
-
   const LATITUDE_TO_PIXEL_RATIO = mapHeight / latitudeRange;
   const LONGITUDE_TO_PIXEL_RATIO = mapWidth / longitudeRange;
 
@@ -68,33 +52,9 @@
     selectedCarId = event.target.value;
     console.log('Selected car ID:', selectedCarId);
   }
-
 </script>
 
 <style>
-
-/*
-        svg {
-            border: 1px;
-            border-style: solid;
-        }
-        circle {
-            fill: steelblue;
-            opacity: 0.5;
-        }
-        circle:hover {
-            fill: red;
-        }
-*/      
-
-
-	h1 {
-		font-size: 2em;
-		color: #333;
-		text-align: center;
-		margin-top: 2em;
-	}
-
 
 	ul {
 		list-style: none;
