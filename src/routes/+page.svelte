@@ -40,9 +40,6 @@
   onMount(() => {
     updateImage();
   });
- 
-  const MIN_LONGITUDE = 24.8825;
-  const MAX_LATITUDE = 36.0675;
   
   const mapWidth = 600;
   const mapHeight = 600;
@@ -54,14 +51,24 @@
   const maxLatitude = Math.max(...latitudes);
   const minLongitude = Math.min(...longitudes);
   const maxLongitude = Math.max(...longitudes);
+  const numCars = data.map(car => car.car_id);
+  const numCar = Math.max(...numCars);
 
-  // Calculate the latitude and longitude differences
+
   const latitudeRange = maxLatitude - minLatitude;
   const longitudeRange = maxLongitude - minLongitude;
 
-  // Calculate the latitude and longitude ratios
   const LATITUDE_TO_PIXEL_RATIO = mapHeight / latitudeRange;
   const LONGITUDE_TO_PIXEL_RATIO = mapWidth / longitudeRange;
+
+  let selectedCarId = ''; // store the selected car ID
+  const uniqueCarIds = [...new Set(data.map(car => car.car_id))];
+  // Function to handle the selection change
+  function handleSelect(event) {
+    selectedCarId = event.target.value;
+    console.log('Selected car ID:', selectedCarId);
+  }
+
 </script>
 
 <style>
@@ -108,6 +115,13 @@
 		<li>University: <b>{university}</b></li>
 		<li>Number: <b>{number}</b></li>
 	</ul>
+
+<label for="carId">Select a car ID:</label>
+<select id="carId" on:change={handleSelect}>
+  {#each uniqueCarIds as carId}
+    <option value={carId}>{carId}</option>
+  {/each}
+</select>
 
  <svg width=600 height=600>
   <rect x="0" y="0" width="600" height="600" fill="#efefef" />
