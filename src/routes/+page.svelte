@@ -99,10 +99,15 @@
 
 <label for="carId">Select a car ID:</label>
 <select id="carId" on:change={handleSelect}>
+  <option value="">Select an option </option>
   {#each uniqueCarIds as carId}
     <option value={carId}>{carId}</option>
   {/each}
 </select>
+
+{#if selectedCarId}
+  <p>Go to <a href="/cars">details</a> for car {selectedCarId}</p>
+{/if}
 
 <svg width=600 height=600>
   <rect x="0" y="0" width="600" height="600" fill="#efefef" />
