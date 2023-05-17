@@ -5,7 +5,10 @@
 
 <!-- App.svelte -->
 <script>
-	let name = 'Pavlos Dimadis';
+
+//Section1
+
+  let name = 'Pavlos Dimadis';
 	let university = 'KU Leuven';
 	let number = 'r0877868';
   import { onMount } from 'svelte';
@@ -52,6 +55,18 @@
     selectedCarId = event.target.value;
     console.log('Selected car ID:', selectedCarId);
   }
+
+//Section 2
+
+  let tooltipText = '';
+
+  function handleMouseOver(car) {
+    tooltipText = `Location: (${car.lat}, ${car.long})`;
+  }
+
+  function handleMouseOut() {
+    tooltipText = '';
+  }
 </script>
 
 <style>
@@ -66,10 +81,16 @@
 		font-size: 1.2em;
 		margin-bottom: 1em;
 	}
+
+  /*Section2*/
+
+  .tooltip:hover title {
+    visibility: visible;
+  }
 </style>
 
 <main>
-<!--	<h1>My Information</h1> -->
+<h1>Final Project Data Visualization 2023</h1>
 	<ul>
 		<li>Name: <b>{name}</b></li>
 		<li>University: <b>{university}</b></li>
@@ -83,7 +104,7 @@
   {/each}
 </select>
 
- <svg width=600 height=600>
+<svg width=600 height=600>
   <rect x="0" y="0" width="600" height="600" fill="#efefef" />
   {#each data as car}
     <circle
@@ -91,10 +112,11 @@
       cy={(maxLatitude - car.lat) * LATITUDE_TO_PIXEL_RATIO}
       r="2"
       opacity="0.2"
-      fill="black"
+      fill={car.car_id === selectedCarId ? 'red' : 'black'}
     />
   {/each}
   {#each p_int as location}
+    <g class="tooltip">
     <circle
       cx={(location.long - minLongitude) * LONGITUDE_TO_PIXEL_RATIO}
       cy={(maxLatitude - location.lat) * LATITUDE_TO_PIXEL_RATIO}
@@ -102,6 +124,8 @@
       fill={getLocationColor(location.type)}
       opacity = "1"
     />
+    <title>{location.name}</title>
+    </g>
   {/each}
 </svg>
 </main>
