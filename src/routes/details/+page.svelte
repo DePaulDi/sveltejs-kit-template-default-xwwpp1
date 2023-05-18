@@ -4,6 +4,8 @@
 
 <script>
 	import { onMount } from 'svelte';
+	import data from "/src/data/dataset1.json"
+  import p_int from "/src/data/dataset2.json"
 
 	let name = 'Pavlos Dimadis';
 	let university = 'KU Leuven';
@@ -32,8 +34,7 @@ let selectedDay = 6;
   });
 
   function filterData() {
-    filteredData = dataset.filter(
-      (item) =>
+    filteredData = data.filter((item) =>
         item.day === selectedDay &&
         item.cumulative_minute_total <= selectedMinute
     );
@@ -43,6 +44,19 @@ let selectedDay = 6;
     selectedMinute = parseInt(event.target.value);
     filterData();
   }
+
+	const mapWidth = 300;
+  const mapHeight = 300;
+  const latitudes = data.map(car => car.lat);
+  const longitudes = data.map(car => car.long);
+  const minLatitude = Math.min(...latitudes);
+  const maxLatitude = Math.max(...latitudes);
+  const minLongitude = Math.min(...longitudes);
+  const maxLongitude = Math.max(...longitudes);
+  const latitudeRange = maxLatitude - minLatitude;
+  const longitudeRange = maxLongitude - minLongitude;
+  const LATITUDE_TO_PIXEL_RATIO = mapHeight / latitudeRange;
+  const LONGITUDE_TO_PIXEL_RATIO = mapWidth / longitudeRange;
 </script>
 
 
@@ -67,12 +81,20 @@ let selectedDay = 6;
 
   <p>Selected Day: {selectedDay}</p>
   <p>Selected Minute: {selectedMinute}</p>
-
-  <h2>Filtered Data:</h2>
-  <ul>
-    {#each filteredData as item (item.key)}
-      <li>{item.key}</li>
-    {/each}
-  </ul>
 </div>
+
+<svg width=300 height=300>
+  <rect x="0" y="0" width="300" height="300" fill="#efefef" />
+  {#each data as car}
+	{#if car.car_id == selectedCarId}
+    <circle
+      cx={(car.long - minLongitude) * LONGITUDE_TO_PIXEL_RATIO}
+      cy={(maxLatitude - car.lat) * LATITUDE_TO_PIXEL_RATIO}
+      r={car.car_id == selectedCarId ? "5.2" : "1.2"}
+      opacity={car.car_id == selectedCarId ? "5.2" : "1.2"}
+      fill="blue"
+    />
+	{/if}
+  {/each}
+	</svg>
 </main>
