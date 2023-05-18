@@ -10,13 +10,14 @@
 	let number = 'r0877868';
 	let currentDisp = 1;
 	let selectedCarId = 2;
-	export let params;
+	let param1;
 
+onMount(() => {
+  const searchParams = new URLSearchParams(window.location.search);
+  selectedCarId = searchParams.get('param1');
+});
 
-	onMount(() => {
-    const param1 = params.get('param1');
-		selectedCarId = param1;
-  });
+selectedCarId = param1;
 
 </script>
 

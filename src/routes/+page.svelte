@@ -101,7 +101,7 @@
 </select>
 
 {#if selectedCarId}
-  <p>Go to <a href="/details?value1=selectedCarId">details</a> for car {selectedCarId}</p>
+<p>Go to <a href={`/details?param1=${encodeURIComponent(selectedCarId)}`}>details</a> for car {selectedCarId}</p>
 {/if}
 
 <svg width=600 height=600>
