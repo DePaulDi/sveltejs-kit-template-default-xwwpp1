@@ -57,17 +57,90 @@ let selectedDay = 6;
   const longitudeRange = maxLongitude - minLongitude;
   const LATITUDE_TO_PIXEL_RATIO = mapHeight / latitudeRange;
   const LONGITUDE_TO_PIXEL_RATIO = mapWidth / longitudeRange;
+
+
+ let overviewData = [];
+
+  onMount(() => {
+    filterData2();
+    generateOverviewImage();
+  });
+
+  function filterData2() {
+    overviewData = data.filter((item) => item.car_id === selectedCarId);
+  }
+
+  function generateOverviewImage() {
+    const canvas = document.getElementById('overview-canvas');
+    const ctx = canvas.getContext('2d');
+
+    // Clear the canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Calculate bar width and height
+    const barWidth = canvas.width / (maxCumulativeMinutes / 1440);
+    const barHeight = canvas.height / data.length;
+
+    // Draw the overview bars
+    for (let i = 0; i < data.length; i++) {
+      const item = data[i];
+      const x = item.cumulative_minute_total / (maxCumulativeMinutes / canvas.width);
+
+      // Draw bar
+      ctx.fillStyle = getLocationColor(item.location_type);
+      ctx.fillRect(x, i * barHeight, barWidth, barHeight);
+
+      // Draw day number
+      ctx.fillStyle = 'black';
+      ctx.fillText(item.day.toString(), x + 5, (i * barHeight) + 20);
+    }
+
+    // Draw vertical lines for time markers
+    const timeMarkers = [0, 360, 720, 1080, 1440];
+    ctx.strokeStyle = 'black';
+    ctx.fillStyle = 'black';
+    ctx.font = '10px sans-serif';
+    ctx.textBaseline = 'top';
+    for (const marker of timeMarkers) {
+      const xPos = (marker / maxCumulativeMinutes) * canvas.width;
+      ctx.beginPath();
+      ctx.moveTo(xPos, 0);
+      ctx.lineTo(xPos, canvas.height);
+      ctx.stroke();
+
+      const hour = Math.floor(marker / 60);
+      const label = hour === 0 ? '24' : hour.toString();
+      ctx.fillText(label, xPos - 5, canvas.height - 12);
+    }
+  }
+
+  function getLocationColor(locationType) {
+    switch (locationType) {
+      case 'professional':
+        return 'blue';
+      case 'housing':
+        return 'green';
+      // Add more location types and colors if needed
+      default:
+        return 'gray';
+    }
+  }
 </script>
 
+<style>
+  canvas {
+    width: 300px;
+    height: 300px;
+    border: 1px solid black;
+  }
+</style>
 
 <main>
 	<ul>
-		<li>Name: <b>{name}</b></li>
-		<li>University: <b>{university}</b></li>
-		<li>Number: <b>{number}</b></li>
+		<li>Name: <b>{name}</b>  -  University: <b>{university}</b>  -  Number: <b>{number}</b></li>
 	</ul>
 
-<p>This is the current value {selectedCarId}</p>
+<p><b>Details for car {selectedCarId}</p>
 	
 	<div>
   <input
@@ -79,7 +152,7 @@ let selectedDay = 6;
     on:input={handleSliderChange}
   />
 
-  <p>Selected Day: {selectedDay}</p>
+  <!--<p>Selected Day: {selectedDay}</p>-->
   <p>Selected Minute: {selectedMinute}</p>
 </div>
 
@@ -97,4 +170,8 @@ let selectedDay = 6;
 	{/if}
   {/each}
 	</svg>
+
+<div>
+  <canvas id="overview-canvas"></canvas>
+</div>
 </main>

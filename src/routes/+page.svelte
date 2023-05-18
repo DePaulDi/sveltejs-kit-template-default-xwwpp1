@@ -86,11 +86,9 @@
 
 <main>
 <h1>Final Project Data Visualization 2023</h1>
-	<ul>
-		<li>Name: <b>{name}</b></li>
-		<li>University: <b>{university}</b></li>
-		<li>Number: <b>{number}</b></li>
-	</ul>
+<ul>
+		<li>Name: <b>{name}</b>  -  University: <b>{university}</b>  -  Number: <b>{number}</b></li>
+</ul>
 
 <label for="carId">Select a car ID:</label>
 <select id="carId" on:change={handleSelect}>
