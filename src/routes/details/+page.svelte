@@ -7,6 +7,7 @@
   import { Bar } from "svelte-chartjs";
 	import data from "/src/data/dataset1.json"
   import p_int from "/src/data/dataset2.json"
+  import data3 from "/src/data/dataset3.json"
 
 	let name = 'Pavlos Dimadis';
 	let university = 'KU Leuven';
@@ -192,13 +193,6 @@ Object.keys(groupedData).forEach((day) => {
     background-color: #ccc;
   }
 
-  .time-marker-label {
-    position: absolute;
-    bottom: 70px;
-    font-size: 12px;
-    text-align: center;
-    width: 0px;
-  }
    .overview {
     display: flex;
     flex-direction: column;
