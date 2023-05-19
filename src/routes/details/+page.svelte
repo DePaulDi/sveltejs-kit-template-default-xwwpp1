@@ -114,25 +114,44 @@ let selectedDay = 6;
     }
   }
 
-  function getLocationColor(locationType) {
-    switch (locationType) {
-      case 'professional':
-        return 'blue';
-      case 'housing':
-        return 'green';
-      // Add more location types and colors if needed
+  function getLocationColor(type) {
+    switch(type) {
+      case "professional":
+        return "red";
+      case "catering":
+        return "green";
+      case "domestic":
+        return "orange";
+      case "housing":
+        return "purple";
       default:
-        return 'gray';
+        return "blue";
     }
   }
 
-  let groupedData = {};
-  data.forEach((carData) => {
-    if (!groupedData[carData.day]) {
-      groupedData[carData.day] = [];
+let groupedData = {};
+
+data.forEach((locData) => {
+  const day = locData.day;
+  if (!groupedData[day]) {
+    groupedData[day] = [];
+  }
+  groupedData[day].push(locData);
+});
+
+let groupedData2 = {};
+
+Object.keys(groupedData).forEach((day) => {
+  groupedData2[day] = {};
+
+  groupedData[day].forEach((locData) => {
+    const type = locData.type;
+    if (!groupedData2[day][type]) {
+      groupedData2[day][type] = [];
     }
-    groupedData[carData.day].push(carData);
+    groupedData2[day][type].push(locData);
   });
+});
 </script>
 
 <style>
@@ -156,7 +175,7 @@ let selectedDay = 6;
   .time-marker {
     position: absolute;
     width: 1px;
-    height: 100%;
+    height: 5%;
     background-color: #ccc;
   }
 
@@ -166,6 +185,12 @@ let selectedDay = 6;
     font-size: 12px;
     text-align: center;
     width: 60px;
+  }
+   .location-marker {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
   }
 </style>
 
@@ -206,23 +231,33 @@ let selectedDay = 6;
 	</svg>
 
 
-
-
 {#each Object.keys(groupedData) as day}
   <div class="day-bar">
     <div class="day-label">{day}</div>
-    <div class="bar" style="width: {groupedData[day].length * 10}px;">  
-    <div class="time-marker" style="left: 0%;"></div>
-    <div class="time-marker" style="left: 25%;"></div>
-    <div class="time-marker" style="left: 50%;"></div>
-    <div class="time-marker" style="left: 75%;"></div>
-    <div class="time-marker" style="left: 100%;"></div>
-    <div class="time-marker-label" style="left: 2%;">0</div>
-    <div class="time-marker-label" style="left: 20%;">6</div>
-    <div class="time-marker-label" style="left: 45%;">12</div>
-    <div class="time-marker-label" style="left: 70%;">18</div>
-    <div class="time-marker-label" style="left: 95%;">24</div>
+    <div class="bar" style="width: {groupedData[day].length * 10}px;">
+      <div class="time-marker" style="left: 0%;"></div>
+      <div class="time-marker" style="left: 25%;"></div>
+      <div class="time-marker" style="left: 50%;"></div>
+      <div class="time-marker" style="left: 75%;"></div>
+      <div class="time-marker" style="left: 100%;"></div>
+      {#each Object.keys(groupedData2[day]) as type}
+        {#each groupedData2[day][type] as location}
+          <div
+            class="location-marker"
+            style="background-color: {getLocationColor[type]}; left: {((location.long - 24.8) / 0.2) * 100}%;"
+            title="{location.name}"
+          ></div>
+        {/each}
+      {/each}
+      <div class="time-marker-label" style="left: 2%;">0</div>
+      <div class="time-marker-label" style="left: 20%;">6</div>
+      <div class="time-marker-label" style="left: 45%;">12</div>
+      <div class="time-marker-label" style="left: 70%;">18</div>
+      <div class="time-marker-label" style="left: 95%;">24</div>
     </div>
   </div>
 {/each}
+
+
+
 </main>
