@@ -4,6 +4,7 @@
 
 <script>
 	import { onMount } from 'svelte';
+  import { Bar } from "svelte-chartjs";
 	import data from "/src/data/dataset1.json"
   import p_int from "/src/data/dataset2.json"
 
@@ -152,6 +153,18 @@ Object.keys(groupedData).forEach((day) => {
     groupedData2[day][type].push(locData);
   });
 });
+
+
+ onMount(() => {
+    Object.keys(groupedData).forEach((day) => {
+      groupedData[day].forEach((location) => {
+        overviewData.push({
+          day,
+          location,
+        });
+      });
+    });
+  });
 </script>
 
 <style>
@@ -172,7 +185,7 @@ Object.keys(groupedData).forEach((day) => {
     background-color: #007bff;
   }
 
-  .time-marker {
+  .bar.time-marker {
     position: absolute;
     width: 1px;
     height: 5%;
@@ -181,17 +194,98 @@ Object.keys(groupedData).forEach((day) => {
 
   .time-marker-label {
     position: absolute;
-    bottom: -20px;
+    bottom: 70px;
     font-size: 12px;
     text-align: center;
-    width: 60px;
+    width: 0px;
   }
-   .location-marker {
+   .overview {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .day-bar {
+    display: flex;
+    align-items: center;
+    height: 20px;
+    background-color: lightgray;
+  }
+
+  .day-number {
+    margin-right: 10px;
+  }
+
+  .location-marker {
     position: absolute;
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
   }
+
+.container {
+  display: flex;
+  align-items: flex-start;
+}
+
+.svg-container {
+  margin-right: 10px; /* Adjust as needed */
+}
+
+.day-bars-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.day-bars-container {
+  display: flex;
+}
+
+.day-bar {
+  position: relative;
+  margin-right: 10px;
+}
+
+.bar {
+  position: relative;
+  width: 100%;
+}
+
+.time-marker {
+  position: absolute;
+  width: 1px;
+  height: 100%;
+  background-color: #ccc;
+}
+
+.time-marker-label {
+  position: absolute;
+  bottom: -20px;
+  font-size: 12px;
+  text-align: center;
+  width: 100%;
+}
+
+.time-marker-label:last-child {
+  bottom: -140px;
+}
+
+/* Vertical Line Positions */
+.time-marker:nth-child(1) { left: 0%; }
+.time-marker:nth-child(2) { left: 25%; }
+.time-marker:nth-child(3) { left: 50%; }
+.time-marker:nth-child(4) { left: 75%; }
+.time-marker:nth-child(5) { left: 100%; }
+
+/* Time Labels Positions */
+.time-marker-label:nth-child(1) { left: 0%; }
+.time-marker-label:nth-child(2) { left: 25%; }
+.time-marker-label:nth-child(3) { left: 50%; }
+.time-marker-label:nth-child(4) { left: 75%; }
+.time-marker-label:nth-child(5) { left: 100%; }
+
 </style>
 
 <main>
@@ -215,6 +309,8 @@ Object.keys(groupedData).forEach((day) => {
   <p>Selected Minute: {selectedMinute}</p>
 </div>
 
+<div class="container">
+  <div class="svg-container">
 <svg width=300 height=300>
   <rect x="0" y="0" width="300" height="300" fill="#efefef" />
   {#each data as car}
@@ -229,35 +325,45 @@ Object.keys(groupedData).forEach((day) => {
 	{/if}
   {/each}
 	</svg>
-
-
+  </div>
+<!--
+<div class="overview">
+  {#each Object.keys(groupedData) as day}
+    <div class="day-bar">
+      <div class="day-number">{day}</div>
+      {#each groupedData[day] as location}
+        <div
+          class="location-marker"
+          style="background-color: {getLocationColor(location.type)};
+                 left: {((location.long - 24.8) / 0.2) * 100}%;"
+          title="{location.name}"
+        ></div>
+      {/each}
+    </div>
+  {/each}
+</div>
+-->
+<div class="day-bars-container" style="width: 300px; height: 300px;">
 {#each Object.keys(groupedData) as day}
   <div class="day-bar">
     <div class="day-label">{day}</div>
-    <div class="bar" style="width: {groupedData[day].length * 10}px;">
-      <div class="time-marker" style="left: 0%;"></div>
-      <div class="time-marker" style="left: 25%;"></div>
-      <div class="time-marker" style="left: 50%;"></div>
-      <div class="time-marker" style="left: 75%;"></div>
-      <div class="time-marker" style="left: 100%;"></div>
-      {#each Object.keys(groupedData2[day]) as type}
-        {#each groupedData2[day][type] as location}
-          <div
-            class="location-marker"
-            style="background-color: {getLocationColor[type]}; left: {((location.long - 24.8) / 0.2) * 100}%;"
-            title="{location.name}"
-          ></div>
-        {/each}
-      {/each}
-      <div class="time-marker-label" style="left: 2%;">0</div>
-      <div class="time-marker-label" style="left: 20%;">6</div>
-      <div class="time-marker-label" style="left: 45%;">12</div>
-      <div class="time-marker-label" style="left: 70%;">18</div>
-      <div class="time-marker-label" style="left: 95%;">24</div>
-    </div>
+    <div class="bar" style="width: 300px;">  
+    <div class="time-marker" style="left: 0%;"></div>
+    <div class="time-marker" style="left: 25%;"></div>
+    <div class="time-marker" style="left: 50%;"></div>
+    <div class="time-marker" style="left: 75%;"></div>
+    <div class="time-marker" style="left: 100%;"></div>
+     {#if day == Object.keys(groupedData)[Object.keys(groupedData).length - 1]}
+      <div class="time-marker-label" style="left: -50%; bottom: -20px;">0</div>
+      <div class="time-marker-label" style="left: -25%; bottom: -20px;">6</div>
+      <div class="time-marker-label" style="left: 0%; bottom: -20px;">12</div>
+      <div class="time-marker-label" style="left: 25%; bottom: -20px;">18</div>
+      <div class="time-marker-label" style="left: 50%; bottom: -20px;">24</div>
+    {/if}
+      </div>
   </div>
 {/each}
-
-
+</div>
+</div>
 
 </main>
