@@ -125,13 +125,47 @@ let selectedDay = 6;
         return 'gray';
     }
   }
+
+  let groupedData = {};
+  data.forEach((carData) => {
+    if (!groupedData[carData.day]) {
+      groupedData[carData.day] = [];
+    }
+    groupedData[carData.day].push(carData);
+  });
 </script>
 
 <style>
-  canvas {
-    width: 300px;
-    height: 300px;
-    border: 1px solid black;
+  .day-bar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .day-label {
+    width: 40px;
+    text-align: right;
+    margin-right: 10px;
+  }
+
+  .bar {
+    height: 20px;
+    background-color: #007bff;
+  }
+
+  .time-marker {
+    position: absolute;
+    width: 1px;
+    height: 100%;
+    background-color: #ccc;
+  }
+
+  .time-marker-label {
+    position: absolute;
+    bottom: -20px;
+    font-size: 12px;
+    text-align: center;
+    width: 60px;
   }
 </style>
 
@@ -171,7 +205,24 @@ let selectedDay = 6;
   {/each}
 	</svg>
 
-<div>
-  <canvas id="overview-canvas"></canvas>
-</div>
+
+
+
+{#each Object.keys(groupedData) as day}
+  <div class="day-bar">
+    <div class="day-label">{day}</div>
+    <div class="bar" style="width: {groupedData[day].length * 10}px;">  
+    <div class="time-marker" style="left: 0%;"></div>
+    <div class="time-marker" style="left: 25%;"></div>
+    <div class="time-marker" style="left: 50%;"></div>
+    <div class="time-marker" style="left: 75%;"></div>
+    <div class="time-marker" style="left: 100%;"></div>
+    <div class="time-marker-label" style="left: 2%;">0</div>
+    <div class="time-marker-label" style="left: 20%;">6</div>
+    <div class="time-marker-label" style="left: 45%;">12</div>
+    <div class="time-marker-label" style="left: 70%;">18</div>
+    <div class="time-marker-label" style="left: 95%;">24</div>
+    </div>
+  </div>
+{/each}
 </main>
