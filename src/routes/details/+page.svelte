@@ -4,7 +4,6 @@
 
 <script>
 	import { onMount } from 'svelte';
-  import { Bar } from "svelte-chartjs";
 	import data from "/src/data/dataset1.json"
   import p_int from "/src/data/dataset2.json"
   import data3 from "/src/data/dataset3.json"
