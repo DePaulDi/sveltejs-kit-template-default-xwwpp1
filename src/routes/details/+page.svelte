@@ -14,6 +14,11 @@
 	let currentDisp = 1;
 	let selectedCarId = 2;
 	let param1;
+  let cars = [];
+
+  onMount(() => {
+    cars = data;
+  });
 
 onMount(() => {
   const searchParams = new URLSearchParams(window.location.search);
@@ -22,7 +27,7 @@ onMount(() => {
 
 selectedCarId = param1;
 
-let selectedDay = 6;
+  let selectedDay = 6;
   let selectedMinute = 0;
   let maxMinutes = 1440; // Total minutes in a day
   let totalDays = 14; // Total number of days
@@ -165,6 +170,35 @@ Object.keys(groupedData).forEach((day) => {
       });
     });
   });
+
+
+   function handleSliderChange1(event) {
+    selectedMinute = event.target.value;
+  }
+
+  $: {
+    const timeWindowInMinutes = 5;
+    let selectedTimestamp = selectedMinute * 60000; // Convert minutes to milliseconds
+
+    cars = cars.map(car => {
+      let lowerBound = selectedTimestamp - timeWindowInMinutes * 60000;
+      let upperBound = selectedTimestamp + timeWindowInMinutes * 60000;
+
+      return {
+        ...car,opacity: car.minute >= lowerBound && car.timestamp <= upperBound ? "1" : "0.2",
+      };
+    });
+  }
+
+
+  function isWithinTimeWindow(car,selectedMinute) {
+    const timeWindowInMinutes = 15;
+    let lim = selectedMinute;
+    let lowerBound = lim - timeWindowInMinutes;
+    let upperBound = lim + timeWindowInMinutes;
+
+    return car.minute >= lowerBound && car.minute <= upperBound;
+  }
 </script>
 
 <style>
@@ -289,53 +323,30 @@ Object.keys(groupedData).forEach((day) => {
 <p><b>Details for car {selectedCarId}</p>
 	
 	<div>
-  <input
-    type="range"
-    min="0"
-    max={maxCumulativeMinutes}
-    step="1"
-    bind:value={selectedMinute}
-    on:input={handleSliderChange}
-  />
+     <input type="range" min="0" max={maxCumulativeMinutes} step="1" bind:value={selectedMinute} on:input={handleSliderChange1} />
 
-  <!--<p>Selected Day: {selectedDay}</p>-->
   <p>Selected Minute: {selectedMinute}</p>
 </div>
 
 <div class="container">
   <div class="svg-container">
-<svg width=300 height=300>
-  <rect x="0" y="0" width="300" height="300" fill="#efefef" />
-  {#each data as car}
-	{#if car.car_id == selectedCarId}
-    <circle
-      cx={(car.long - minLongitude) * LONGITUDE_TO_PIXEL_RATIO}
-      cy={(maxLatitude - car.lat) * LATITUDE_TO_PIXEL_RATIO}
-      r={car.car_id == selectedCarId ? "5.2" : "1.2"}
-      opacity={car.car_id == selectedCarId ? "5.2" : "1.2"}
-      fill="blue"
-    />
-	{/if}
-  {/each}
-	</svg>
-  </div>
-<!--
-<div class="overview">
-  {#each Object.keys(groupedData) as day}
-    <div class="day-bar">
-      <div class="day-number">{day}</div>
-      {#each groupedData[day] as location}
-        <div
-          class="location-marker"
-          style="background-color: {getLocationColor(location.type)};
-                 left: {((location.long - 24.8) / 0.2) * 100}%;"
-          title="{location.name}"
-        ></div>
+    <svg width="300" height="300">
+      <rect x="0" y="0" width="300" height="300" fill="#efefef" />
+      {#each cars as car}
+        {#if car.car_id == selectedCarId}
+          <circle
+            cx={(car.long - minLongitude) * LONGITUDE_TO_PIXEL_RATIO}
+            cy={(maxLatitude - car.lat) * LATITUDE_TO_PIXEL_RATIO}
+            r={car.car_id == selectedCarId ? "5.2" : "1.2"}
+            fill={isWithinTimeWindow(car,selectedMinute) ? "red" : "blue"}
+            opacity={isWithinTimeWindow(car,selectedMinute) ? "1" : "0.2"}
+          />
+        {/if}
       {/each}
-    </div>
-  {/each}
-</div>
--->
+    </svg>
+  </div>
+
+
 <div class="day-bars-container" style="width: 300px; height: 300px;">
 {#each Object.keys(groupedData) as day}
   <div class="day-bar">
