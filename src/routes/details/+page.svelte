@@ -190,6 +190,7 @@ Object.keys(groupedData).forEach((day) => {
     });
   }
 
+const timeWindow = 15;
 
     function isWithinTimeWindow(car,selectedMinute) {
       const timeWindowInMinutes = 15;
@@ -322,7 +323,7 @@ Object.keys(groupedData).forEach((day) => {
 <p><b>Details for car {selectedCarId}</p>
 	
 	<div>
-     <input type="range" min="0" max={maxCumulativeMinutes} step="1" bind:value={selectedMinute} on:input={handleSliderChange1} />
+     <input type="range" min="0" max={maxCumulativeMinutes} step="1" bind:value={selectedMinute} on:input={handleSliderChange1} on:change={handleSliderChange1} />
 
   <p>Selected Minute: {selectedMinute}</p>
 </div>
@@ -341,7 +342,7 @@ Object.keys(groupedData).forEach((day) => {
               fill="red"
               opacity="1"
             />
-          {:else}
+            {:else}
             <circle
               cx={(car.long - minLongitude) * LONGITUDE_TO_PIXEL_RATIO}
               cy={(maxLatitude - car.lat) * LATITUDE_TO_PIXEL_RATIO}
@@ -349,7 +350,7 @@ Object.keys(groupedData).forEach((day) => {
               fill="blue"
               opacity="0.2"
             />
-          {/if}
+        {/if}
         {/if}
       {/each}
     </svg>
