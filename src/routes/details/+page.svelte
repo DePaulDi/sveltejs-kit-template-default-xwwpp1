@@ -191,14 +191,13 @@ Object.keys(groupedData).forEach((day) => {
   }
 
 
-  function isWithinTimeWindow(car,selectedMinute) {
-    const timeWindowInMinutes = 15;
-    let lim = selectedMinute;
-    let lowerBound = lim - timeWindowInMinutes;
-    let upperBound = lim + timeWindowInMinutes;
-
-    return car.minute >= lowerBound && car.minute <= upperBound;
-  }
+    function isWithinTimeWindow(car,selectedMinute) {
+      const timeWindowInMinutes = 15;
+      let lim = selectedMinute;
+      let lowerBound = lim - timeWindowInMinutes;
+      let upperBound = lim + timeWindowInMinutes;
+      return car.minute * 60000 >= lowerBound && car.minute * 60000 <= upperBound;
+    } 
 </script>
 
 <style>
@@ -334,13 +333,23 @@ Object.keys(groupedData).forEach((day) => {
       <rect x="0" y="0" width="300" height="300" fill="#efefef" />
       {#each cars as car}
         {#if car.car_id == selectedCarId}
-          <circle
-            cx={(car.long - minLongitude) * LONGITUDE_TO_PIXEL_RATIO}
-            cy={(maxLatitude - car.lat) * LATITUDE_TO_PIXEL_RATIO}
-            r={car.car_id == selectedCarId ? "5.2" : "1.2"}
-            fill={isWithinTimeWindow(car,selectedMinute) ? "red" : "blue"}
-            opacity={isWithinTimeWindow(car,selectedMinute) ? "1" : "0.2"}
-          />
+          {#if isWithinTimeWindow(car, selectedMinute)}
+            <circle
+              cx={(car.long - minLongitude) * LONGITUDE_TO_PIXEL_RATIO}
+              cy={(maxLatitude - car.lat) * LATITUDE_TO_PIXEL_RATIO}
+              r="5.2"
+              fill="red"
+              opacity="1"
+            />
+          {:else}
+            <circle
+              cx={(car.long - minLongitude) * LONGITUDE_TO_PIXEL_RATIO}
+              cy={(maxLatitude - car.lat) * LATITUDE_TO_PIXEL_RATIO}
+              r="5.2"
+              fill="blue"
+              opacity="0.2"
+            />
+          {/if}
         {/if}
       {/each}
     </svg>
