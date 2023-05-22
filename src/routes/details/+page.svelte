@@ -173,33 +173,22 @@ Object.keys(groupedData).forEach((day) => {
 
 
    function handleSliderChange1(event) {
-    selectedMinute = event.target.value;
+    selectedMinute = parseInt(event.target.value);
   }
 
   $: {
     const timeWindowInMinutes = 5;
-    let selectedTimestamp = selectedMinute * 60000; // Convert minutes to milliseconds
-
-    cars = cars.map(car => {
-      let lowerBound = selectedTimestamp - timeWindowInMinutes * 60000;
-      let upperBound = selectedTimestamp + timeWindowInMinutes * 60000;
-
-      return {
-        ...car,opacity: car.minute >= lowerBound && car.timestamp <= upperBound ? "1" : "0.2",
-      };
-    });
+  }
+  
+    function isWithinTimeWindow(car, selectedMinute) {
+    const timeWindowInMinutes = 30;
+    let lim = selectedMinute;
+    let lowerBound = lim - timeWindowInMinutes;
+    let upperBound = lim + timeWindowInMinutes;
+    return car.cumulative_minute_total >= lowerBound && car.cumulative_minute_total <= upperBound;
   }
 
-const timeWindow = 15;
-
-    function isWithinTimeWindow(car,selectedMinute) {
-      const timeWindowInMinutes = 15;
-      let lim = selectedMinute;
-      let lowerBound = lim - timeWindowInMinutes;
-      let upperBound = lim + timeWindowInMinutes;
-      return car.minute * 60000 >= lowerBound && car.minute * 60000 <= upperBound;
-    } 
-</script>
+    </script>
 
 <style>
   .day-bar {
@@ -329,32 +318,32 @@ const timeWindow = 15;
 </div>
 
 <div class="container">
-  <div class="svg-container">
-    <svg width="300" height="300">
-      <rect x="0" y="0" width="300" height="300" fill="#efefef" />
-      {#each cars as car}
-        {#if car.car_id == selectedCarId}
-          {#if isWithinTimeWindow(car, selectedMinute)}
-            <circle
-              cx={(car.long - minLongitude) * LONGITUDE_TO_PIXEL_RATIO}
-              cy={(maxLatitude - car.lat) * LATITUDE_TO_PIXEL_RATIO}
-              r="5.2"
-              fill="red"
-              opacity="1"
-            />
-            {:else}
-            <circle
-              cx={(car.long - minLongitude) * LONGITUDE_TO_PIXEL_RATIO}
-              cy={(maxLatitude - car.lat) * LATITUDE_TO_PIXEL_RATIO}
-              r="5.2"
-              fill="blue"
-              opacity="0.2"
-            />
+<div class="svg-container">
+  <svg width="300" height="300">
+    <rect x="0" y="0" width="300" height="300" fill="#efefef" />
+    {#each cars as car}
+      {#if car.car_id == selectedCarId}
+        {#if isWithinTimeWindow(car, selectedMinute)}
+          <circle
+            cx={(car.long - minLongitude) * LONGITUDE_TO_PIXEL_RATIO}
+            cy={(maxLatitude - car.lat) * LATITUDE_TO_PIXEL_RATIO}
+            r="5.2"
+            fill="red"
+            opacity="1"
+          />
+          {:else}
+           <circle
+            cx={(car.long - minLongitude) * LONGITUDE_TO_PIXEL_RATIO}
+            cy={(maxLatitude - car.lat) * LATITUDE_TO_PIXEL_RATIO}
+            r="5.2"
+            fill="blue"
+            opacity="0.2"
+          />
         {/if}
-        {/if}
-      {/each}
-    </svg>
-  </div>
+      {/if}
+    {/each}
+  </svg>
+</div>
 
 
 <div class="day-bars-container" style="width: 300px; height: 300px;">
