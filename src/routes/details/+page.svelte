@@ -416,7 +416,6 @@ let currentIndex = selectedCarId;
     <div class="day-label">{day}</div>
     <div class="bar" style="width: 300px;">
     <div class="time-marker" style="left: 0%;"></div>
-    <div class="car_duration professional" style="left: 10%;"></div>
     <div class="time-marker" style="left: 25%;"></div>
     <div class="time-marker" style="left: 50%;"></div>
     <div class="time-marker" style="left: 75%;"></div>
