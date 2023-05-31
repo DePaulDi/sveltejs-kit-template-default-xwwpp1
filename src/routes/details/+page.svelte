@@ -16,9 +16,6 @@
 	let param1;
   let cars = [];
 
-  onMount(() => {
-    cars = data;
-  });
 
 onMount(() => {
   const searchParams = new URLSearchParams(window.location.search);
@@ -304,7 +301,7 @@ let currentIndex = selectedCarId;
 }
 
 .svg-container {
-  margin-right: 10px; /* Adjust as needed */
+  margin-right: 10px; 
 }
 
 .day-bars-container {
@@ -388,7 +385,7 @@ let currentIndex = selectedCarId;
 <div class="svg-container">
   <svg width="300" height="300">
     <rect x="0" y="0" width="300" height="300" fill="#efefef" />
-    {#each cars as car}
+    {#each data as car}
       {#if car.car_id == selectedCarId}
         {#if isWithinTimeWindow(car, selectedMinute)}
           <circle
