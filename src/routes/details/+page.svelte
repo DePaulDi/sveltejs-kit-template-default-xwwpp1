@@ -226,6 +226,20 @@ Object.keys(groupedData).forEach((day) => {
 // }
 
 // getSelelectedCarData();
+
+let currentIndex = selectedCarId;
+
+   function goToPreviousCar() {
+    if (selectedCarId > 0) {
+      selectedCarId--;
+    }
+  }
+
+  function goToNextCar() {
+    if (selectedCarId < cars.length - 1) {
+      selectedCarId++;
+    }
+  }
  </script>
 
 <style>
@@ -354,7 +368,11 @@ Object.keys(groupedData).forEach((day) => {
 </style>
 
 <main>
-	<ul>
+
+  <h1>{selectedCarId}</h1>
+  <button on:click={() => goToPreviousCar()}>Previous</button>
+  <button on:click={() => goToNextCar()}>Next</button>
+  <ul>
 		<li>Name: <b>{name}</b>  -  University: <b>{university}</b>  -  Number: <b>{number}</b></li>
 	</ul>
 
