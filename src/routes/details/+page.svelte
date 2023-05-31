@@ -236,7 +236,7 @@ let currentIndex = selectedCarId;
   }
 
   function goToNextCar() {
-    if (selectedCarId < cars.length - 1) {
+    {
       selectedCarId++;
     }
   }
@@ -369,14 +369,14 @@ let currentIndex = selectedCarId;
 
 <main>
 
-  <h1>{selectedCarId}</h1>
+  <p><b>Details for car {selectedCarId}</p>
   <button on:click={() => goToPreviousCar()}>Previous</button>
   <button on:click={() => goToNextCar()}>Next</button>
   <ul>
 		<li>Name: <b>{name}</b>  -  University: <b>{university}</b>  -  Number: <b>{number}</b></li>
 	</ul>
 
-<p><b>Details for car {selectedCarId}</p>
+
 	
 	<div>
      <input type="range" min="0" max={maxCumulativeMinutes} step="1" bind:value={selectedMinute} on:input={handleSliderChange1} on:change={handleSliderChange1} />
