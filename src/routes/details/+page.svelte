@@ -188,7 +188,45 @@ Object.keys(groupedData).forEach((day) => {
     return car.cumulative_minute_total >= lowerBound && car.cumulative_minute_total <= upperBound;
   }
 
-    </script>
+  // test
+
+  //   function getAttributes(events, selectedCar) {
+  //   const attributes = [];
+
+  //   events.forEach((event) => {
+  //   const { car, start, end, location } = event;
+  //   if (car == selectedCar) {
+  //     attributes.push({ car, start, end, location });
+  //   }
+  // });
+
+  //   return attributes;
+  // }
+
+
+
+
+// const apiURL = "https://vda-lab.github.io/assets/vast2021_carstops.json";
+
+// async function getSelelectedCarData() {
+//   try {
+//     const response = await fetch(apiURL);
+//     const data = await response.json();
+
+//     // Filter the data for cars with ID 1
+//     const getSelelectedCarData = data.filter(car => car.car_id === 1);
+
+//     // Print the filtered results
+//     getSelelectedCarData.forEach(car => {
+//       console.log(car);
+//     });
+//   } catch (error) {
+//     console.error("Error occurred while accessing the API.", error);
+//   }
+// }
+
+// getSelelectedCarData();
+ </script>
 
 <style>
   .day-bar {
@@ -213,6 +251,12 @@ Object.keys(groupedData).forEach((day) => {
     width: 1px;
     height: 5%;
     background-color: #ccc;
+  }
+
+   .car_duration {
+    position: absolute;
+    width: 1px;
+    height: 100%;
   }
 
    .overview {
@@ -288,6 +332,11 @@ Object.keys(groupedData).forEach((day) => {
   bottom: -140px;
 }
 
+/* test */
+.professional {
+  background-color: red;
+}
+
 /* Vertical Line Positions */
 .time-marker:nth-child(1) { left: 0%; }
 .time-marker:nth-child(2) { left: 25%; }
@@ -350,8 +399,9 @@ Object.keys(groupedData).forEach((day) => {
 {#each Object.keys(groupedData) as day}
   <div class="day-bar">
     <div class="day-label">{day}</div>
-    <div class="bar" style="width: 300px;">  
+    <div class="bar" style="width: 300px;">
     <div class="time-marker" style="left: 0%;"></div>
+    <div class="car_duration professional" style="left: 10%;"></div>
     <div class="time-marker" style="left: 25%;"></div>
     <div class="time-marker" style="left: 50%;"></div>
     <div class="time-marker" style="left: 75%;"></div>
