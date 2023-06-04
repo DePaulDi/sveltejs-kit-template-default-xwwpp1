@@ -361,7 +361,6 @@ function goToNextCar() {
 	<div>
      <input type="range" min="0" max={maxCumulativeMinutes} step="1" bind:value={selectedMinute} on:input={handleSliderChange1} on:change={handleSliderChange1} />
 
-  <p>Selected Minute: {selectedMinute}</p>
 </div>
 
 <div class="container">
