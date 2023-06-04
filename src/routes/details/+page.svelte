@@ -7,7 +7,6 @@
 	import data from "/src/data/dataset1.json"
   import p_int from "/src/data/dataset2.json"
   import data3 from "/src/data/dataset3.json"
-  import { tick } from 'svelte';
 
 
 	let name = 'Pavlos Dimadis';
@@ -359,8 +358,6 @@ function goToNextCar() {
 		<li>Name: <b>{name}</b>  -  University: <b>{university}</b>  -  Number: <b>{number}</b></li>
 	</ul>
 
-
-	
 	<div>
      <input type="range" min="0" max={maxCumulativeMinutes} step="1" bind:value={selectedMinute} on:input={handleSliderChange1} on:change={handleSliderChange1} />
 
