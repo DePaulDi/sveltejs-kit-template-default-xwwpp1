@@ -19,17 +19,7 @@
   let cars = [];
 
 
-// onMount(() => {
-//   const searchParams = new URLSearchParams(window.location.search);
-//   selectedCarId = searchParams.get('param1');
-// });
-
-// onMount(function() {
-//   const searchParams = new URLSearchParams(window.location.search);
-//   selectedCarId = searchParams.get('param1');
-// });
-
-onMount(function() {
+onMount(() => {
   const searchParams = new URLSearchParams(window.location.search);
   selectedCarId = searchParams.get('param1');
 });
