@@ -80,14 +80,11 @@ onMount(() => {
     const canvas = document.getElementById('overview-canvas');
     const ctx = canvas.getContext('2d');
 
-    // Clear the canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Calculate bar width and height
     const barWidth = canvas.width / (maxCumulativeMinutes / 1440);
     const barHeight = canvas.height / data.length;
 
-    // Draw the overview bars
     for (let i = 0; i < data.length; i++) {
       const item = data[i];
       const x = item.cumulative_minute_total / (maxCumulativeMinutes / canvas.width);
@@ -185,63 +182,8 @@ Object.keys(groupedData).forEach((day) => {
     return car.cumulative_minute_total >= lowerBound && car.cumulative_minute_total <= upperBound;
   }
 
-  // test
-
-  //   function getAttributes(events, selectedCar) {
-  //   const attributes = [];
-
-  //   events.forEach((event) => {
-  //   const { car, start, end, location } = event;
-  //   if (car == selectedCar) {
-  //     attributes.push({ car, start, end, location });
-  //   }
-  // });
-
-  //   return attributes;
-  // }
-
-
-
-
-// const apiURL = "https://vda-lab.github.io/assets/vast2021_carstops.json";
-
-// async function getSelelectedCarData() {
-//   try {
-//     const response = await fetch(apiURL);
-//     const data = await response.json();
-
-//     // Filter the data for cars with ID 1
-//     const getSelelectedCarData = data.filter(car => car.car_id === 1);
-
-//     // Print the filtered results
-//     getSelelectedCarData.forEach(car => {
-//       console.log(car);
-//     });
-//   } catch (error) {
-//     console.error("Error occurred while accessing the API.", error);
-//   }
-// }
-
-// getSelelectedCarData();
 
 let currentIndex = selectedCarId;
-
-  //  function goToPreviousCar() {
-  //   if (selectedCarId > 0) {
-  //     selectedCarId--;
-  //   }
-  // }
-
-  // function goToNextCar() {
-  //   if(selectedCarId<36)
-  //   {
-  //     selectedCarId++;
-  //   }
-  //   else if(selectedCarId>105 || selectedCarId<108)
-  //   {
-  //     selectedCarId++;
-  //   }
-  // }
 
   function goToPreviousCar() {
   if (selectedCarId > 0 && selectedCarId <= 35) {
