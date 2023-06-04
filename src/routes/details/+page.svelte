@@ -7,22 +7,36 @@
 	import data from "/src/data/dataset1.json"
   import p_int from "/src/data/dataset2.json"
   import data3 from "/src/data/dataset3.json"
+  import { tick } from 'svelte';
+
 
 	let name = 'Pavlos Dimadis';
 	let university = 'KU Leuven';
 	let number = 'r0877868';
 	let currentDisp = 1;
-	let selectedCarId = 2;
+	let selectedCarId = 0;
 	let param1;
   let cars = [];
 
 
-onMount(() => {
+// onMount(() => {
+//   const searchParams = new URLSearchParams(window.location.search);
+//   selectedCarId = searchParams.get('param1');
+// });
+
+// onMount(function() {
+//   const searchParams = new URLSearchParams(window.location.search);
+//   selectedCarId = searchParams.get('param1');
+// });
+
+onMount(function() {
   const searchParams = new URLSearchParams(window.location.search);
   selectedCarId = searchParams.get('param1');
 });
 
-selectedCarId = param1;
+tick();
+  console.log("this is",selectedCarId);
+
 
   let selectedDay = 6;
   let selectedMinute = 0;
@@ -89,16 +103,13 @@ selectedCarId = param1;
       const item = data[i];
       const x = item.cumulative_minute_total / (maxCumulativeMinutes / canvas.width);
 
-      // Draw bar
       ctx.fillStyle = getLocationColor(item.location_type);
       ctx.fillRect(x, i * barHeight, barWidth, barHeight);
 
-      // Draw day number
       ctx.fillStyle = 'black';
       ctx.fillText(item.day.toString(), x + 5, (i * barHeight) + 20);
     }
 
-    // Draw vertical lines for time markers
     const timeMarkers = [0, 360, 720, 1080, 1440];
     ctx.strokeStyle = 'black';
     ctx.fillStyle = 'black';
@@ -226,17 +237,61 @@ Object.keys(groupedData).forEach((day) => {
 
 let currentIndex = selectedCarId;
 
-   function goToPreviousCar() {
-    if (selectedCarId > 0) {
-      selectedCarId--;
-    }
+  //  function goToPreviousCar() {
+  //   if (selectedCarId > 0) {
+  //     selectedCarId--;
+  //   }
+  // }
+
+  // function goToNextCar() {
+  //   if(selectedCarId<36)
+  //   {
+  //     selectedCarId++;
+  //   }
+  //   else if(selectedCarId>105 || selectedCarId<108)
+  //   {
+  //     selectedCarId++;
+  //   }
+  // }
+
+  function goToPreviousCar() {
+  if (selectedCarId > 0 && selectedCarId <= 35) {
+    selectedCarId--;
+  } else if (selectedCarId > 104 && selectedCarId <= 107) {
+    selectedCarId--;
+  }
+  else if (selectedCarId==104){
+     selectedCarId = 101
+   }
+  else if (selectedCarId == 0)
+   {
+
+   }
+  else
+  {
+    selectedCarId = 35;
   }
 
-  function goToNextCar() {
-    {
-      selectedCarId++;
-    }
+}
+
+function goToNextCar() {
+  if (selectedCarId >= 0 && selectedCarId < 35) {
+    selectedCarId++;
+  } else if (selectedCarId > 103 && selectedCarId < 107) {
+    selectedCarId++;
   }
+   else if (selectedCarId==101){
+     selectedCarId = 104
+   }
+   else if (selectedCarId == 107)
+   {
+   }
+  else
+  {
+    selectedCarId = 101;
+  }
+}
+
  </script>
 
 <style>
