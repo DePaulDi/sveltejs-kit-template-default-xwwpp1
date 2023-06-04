@@ -24,8 +24,7 @@ onMount(() => {
   selectedCarId = searchParams.get('param1');
 });
 
-tick();
-  console.log("this is",selectedCarId);
+
 
 
   let selectedDay = 6;
