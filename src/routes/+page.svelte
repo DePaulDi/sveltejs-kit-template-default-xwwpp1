@@ -43,15 +43,13 @@
   const LATITUDE_TO_PIXEL_RATIO = mapHeight / latitudeRange;
   const LONGITUDE_TO_PIXEL_RATIO = mapWidth / longitudeRange;
 
-  let selectedCarId = ''; // store the selected car ID
+  let selectedCarId = ''; 
   const uniqueCarIds = [...new Set(data.map(car => car.car_id))];
-  // Function to handle the selection change
+  
   function handleSelect(event) {
     selectedCarId = event.target.value;
     console.log('Selected car ID:', selectedCarId);
   }
-
-//Section 2
 
   let tooltipText = '';
 
