@@ -242,26 +242,6 @@ function goToNextCar() {
     background-color: #007bff;
   }
 
-  .bar.time-marker {
-    position: absolute;
-    width: 1px;
-    height: 5%;
-    background-color: #ccc;
-  }
-
-   .car_duration {
-    position: absolute;
-    width: 1px;
-    height: 100%;
-  }
-
-   .overview {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-
   .day-bar {
     display: flex;
     align-items: center;
@@ -269,16 +249,6 @@ function goToNextCar() {
     background-color: lightgray;
   }
 
-  .day-number {
-    margin-right: 10px;
-  }
-
-  .location-marker {
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-  }
 
 .container {
   display: flex;
@@ -328,19 +298,12 @@ function goToNextCar() {
   bottom: -140px;
 }
 
-/* test */
-.professional {
-  background-color: red;
-}
-
-/* Vertical Line Positions */
 .time-marker:nth-child(1) { left: 0%; }
 .time-marker:nth-child(2) { left: 25%; }
 .time-marker:nth-child(3) { left: 50%; }
 .time-marker:nth-child(4) { left: 75%; }
 .time-marker:nth-child(5) { left: 100%; }
 
-/* Time Labels Positions */
 .time-marker-label:nth-child(1) { left: 0%; }
 .time-marker-label:nth-child(2) { left: 25%; }
 .time-marker-label:nth-child(3) { left: 50%; }
